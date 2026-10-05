@@ -13,7 +13,8 @@ public class MenuAVL {
         do{
             System.out.println( "0 - Sair do programa\n" +
                                 "1 - Insere 1 valor na AVL\n" +
-                                "2 - Apresenta pós ordem os nós da AVL apresentando também o FB do nó\n");
+                                "2 - Apresenta pós ordem os nós da AVL apresentando também o FB do nó\n" +
+                                "3- Remove um nó escolhido por seu conteúdo\n");
             opcao = sc.nextInt();
             switch (opcao){
                 case 0 -> System.out.println("Encerrando o programa...");
@@ -27,6 +28,13 @@ public class MenuAVL {
                 case 2 -> {
                     System.out.println("Apresentando AVL");
                     avl.mostraFB(avl.root);
+                }
+
+                case 3 -> {
+                    System.out.println("Digite o valor a ser removido da AVL: ");
+                    int valor = sc.nextInt();
+                    avl.root = avl.removeValorAVL(avl.root, valor);
+                    avl.root = avl.atualizaAlturaBalanceamento(avl.root);
                 }
 
                 default -> System.out.println("Opção inválida!");

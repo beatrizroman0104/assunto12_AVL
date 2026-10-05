@@ -92,5 +92,92 @@ public class AvlInt {
         return p;
     }
 
+    public No removeValorAVL(No p, int info) {
+        if (p != null) {
+            if (info == p.dado) {
+                if (p.esq == null && p.dir == null)
+                    return null;
+                else {
+                    if (p.esq == null)
+                        return p.dir;
+                    else if (p.dir == null)
+                        return p.esq;
+                    else {
+                        No aux, aux2;
+                        aux2 = p.dir;
+                        aux = p.dir;
+                        if (aux.esq == null) {
+                            p.dado = aux.dado;
+                            p.dir = aux.dir;
+                        }else{
+                            while (aux.esq != null){
+                                aux2 = aux;
+                                aux = aux.esq;
+                            }
+                            p.dado = aux.dado;
+                            aux2.esq = null;
+                        }
+                    }
+                }
+            } else { // procura dado a ser removido na ABB
+                if (info < p.dado)
+                    p.esq = removeValorAVL(p.esq, info);
+                else
+                    p.dir = removeValorAVL(p.dir, info);
+            }
+        }
+        return p;
+    }
+
+    public void atualizaAlturas(No p) {
+        /*atualiza informação da altura
+        de cada nó depois da remoção percorre
+        a árvore usando percurso pós-ordem para
+        ajustar primeiro os nós folhas (profundidade maior)
+        e depois os níveis acima */
+        if( p != null) {
+            atualizaAlturas(p.esq);
+            if (p.esq == null)
+                p.hEsq = 0;
+            else  if (p.esq.hEsq > p.esq.hDir)
+                p.hEsq = p.esq.hEsq+1;
+            else
+                p.hEsq = p.esq.hDir+1;
+            atualizaAlturas(p.dir);
+            if (p.dir == null)
+                p.hDir = 0;
+            else if (p.dir.hEsq > p.dir.hDir)
+                p.hDir = p.dir.hEsq+1;
+            else
+                p.hDir = p.dir.hDir+1;
+        }
+    }
+
+    public No atualizaAlturaBalanceamento (No p) {
+        /*atualiza informação da altura de cada nó depois da remoção
+        percorre a árvore usando percurso pós-ordem para ajustar primeiro
+        os nós folhas (profundidade maior) e depois os níveis acima */
+        if( p != null) {
+            p.esq = atualizaAlturaBalanceamento (p.esq);
+            if (p.esq == null)
+                p.hEsq = 0;
+            else  if (p.esq.hEsq > p.esq.hDir)
+                p.hEsq = p.esq.hEsq+1;
+            else
+                p.hEsq = p.esq.hDir+1;
+            p.dir = atualizaAlturaBalanceamento (p.dir);
+            if (p.dir == null)
+                p.hDir = 0;
+            else if (p.dir.hEsq > p.dir.hDir)
+                p.hDir = p.dir.hEsq+1;
+            else
+                p.hDir = p.dir.hDir+1;
+            p = balanceamento(p);
+            atualizaAlturas(p);
+        }
+        return p;
+    }
+
+
 
 }
